@@ -1,1 +1,3 @@
-echo "pytest" > requirements.txt
+pytest
+bandit
+safety

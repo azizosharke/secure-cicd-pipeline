@@ -1,0 +1,38 @@
+name: Secure CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Unit Tests
+        run: pytest
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Bandit (Python Static Code Analysis)
+        run: bandit -r .
+
+  dependency-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Dependencies
+        run: safety check
+
+  deploy:
+    needs: [build, test, static-analysis, dependency-check]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        run: echo "Deploying application..."

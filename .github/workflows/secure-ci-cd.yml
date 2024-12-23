@@ -12,22 +12,44 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt  # Python projects
+          
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
       - name: Run Unit Tests
         run: pytest
 
   static-analysis:
     runs-on: ubuntu-latest
     steps:
-      - name: Run Bandit (Python Static Code Analysis)
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Run Static Code Analysis
         run: bandit -r .
 
   dependency-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Dependencies
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Safety
+        run: pip install safety
+
+      - name: Check Vulnerable Dependencies
         run: safety check
 
   deploy:
